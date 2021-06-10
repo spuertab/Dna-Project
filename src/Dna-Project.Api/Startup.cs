@@ -12,6 +12,7 @@ namespace Dna_Project.Api
     using System.Reflection;
     using System.Linq;
     using System.IO;
+    using Dna_Project.Api.Middlewares;
 
     public class Startup
     {
@@ -70,6 +71,8 @@ namespace Dna_Project.Api
                 .AllowAnyHeader());
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -15,7 +15,18 @@
 
         private static readonly object[] Dnas =
         {
-            new object[] { new string[] {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"} },
+            new object[] 
+            { 
+                new string[] 
+                {
+                    "ATGCGA",
+                    "CAGTGC",
+                    "TTATGT",
+                    "AGAAGG",
+                    "ACCCTA",
+                    "TCACTG"
+                } 
+            },
         };
 
         [Test]
@@ -24,6 +35,29 @@
         {
             // Service
             Assert.IsFalse(mutantService.IsMutant(dna));
+        }
+
+        private static readonly object[] Dnas2 =
+        {
+            new object[] 
+            { 
+                new string[] {
+                    "ATGGGG",
+                    "CAGTGC",
+                    "ATAGGT",
+                    "ATAAGG",
+                    "CCTCTA",
+                    "TCATTG"
+                } 
+            },
+        };
+
+        [Test]
+        [TestCaseSource(nameof(Dnas2))]
+        public void IsMutant(string[] dna)
+        {
+            // Service
+            Assert.IsTrue(mutantService.IsMutant(dna));
         }
     }
 }

@@ -1,20 +1,20 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
-ENV ASPNETCORE_URLS=http://+:5000
+EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
-COPY . .
+COPY ["Dna-Project.Api/Dna-Project.Api.csproj", "Dna-Project.Api/"]
 RUN dotnet restore "Dna-Project.Api/Dna-Project.Api.csproj"
+COPY . .
 WORKDIR "/src/Dna-Project.Api"
-RUN dotnet build "Dna-Project.Api.csproj" -c Release -o /app
+RUN dotnet build "Dna-Project.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-WORKDIR "/src/Dna-Project.Api"
-RUN dotnet publish "Dna-Project.Api.csproj" -c Release -o /app
+RUN dotnet publish "Dna-Project.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Dna-Project.Api.dll", "--server.urls", "http://0.0.0.0:5000"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Dna-Project.Api.dll"]

@@ -23,7 +23,7 @@
                     "ATGCGA",
                     "CAGTGC",
                     "TTATGT",
-                    "AGAAGG",
+                    "AGAAAG",
                     "ACCCTA",
                     "TCACTG"
                 } 
@@ -49,7 +49,10 @@
                     "ATAAGG",
                     "CCTCTA",
                     "TCATTG"
-                },
+                }
+            },
+            new object[]
+            {
                 new string[] {
                     "ATGGGG",
                     "AAGTGC",
@@ -80,7 +83,10 @@
                     "ATAATG",
                     "CCTTTA",
                     "TCTTTG"
-                },
+                }
+            },
+            new object[]
+            {
                 System.Array.Empty<string>()
             },
         };

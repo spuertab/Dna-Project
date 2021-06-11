@@ -1,5 +1,7 @@
 ﻿namespace Dna_Project.Core.Services
 {
+    using Dna_Project.Infra.Interface;
+    using Dna_Project.Infra.Models;
     using Interfaces;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -9,12 +11,28 @@
         readonly int minEquals = 2;
         readonly int totalToValidate = 4;
         readonly char[] letters = new char[] { 'A', 'G', 'T', 'C' };
+        readonly IMutantRepository _mutantService;
+
+        public MutantService(IMutantRepository mutantService)
+        {
+            _mutantService = mutantService;
+        }
 
         public bool IsMutant(string[] dna)
         {
             if (dna == null || dna.Length < 1) throw new ValidationException("Wrong DNA");
 
-            return IsMutantRecursive(dna);
+            bool isMutant = IsMutantRecursive(dna);
+
+            DnaModel dnaModel = new DnaModel()
+            {
+                Dna = string.Join("; ", dna),
+                IsMutant = isMutant
+            };
+
+            _mutantService.SaveDan(dnaModel);
+
+            return isMutant;
         }
 
         private bool IsMutantRecursive(string[] dna, int position = 0, int equals = 0)

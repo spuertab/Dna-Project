@@ -13,6 +13,8 @@ namespace Dna_Project.Api
     using System.Linq;
     using System.IO;
     using Dna_Project.Api.Middlewares;
+    using Dna_Project.Infra.Interface;
+    using Dna_Project.Infra.Repositories;
 
     public class Startup
     {
@@ -48,7 +50,11 @@ namespace Dna_Project.Api
                 });
             });
 
+            // Services
             services.AddScoped<IMutantService, MutantService>();
+
+            // Repositories
+            services.AddScoped<IMutantRepository, MutantRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

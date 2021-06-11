@@ -28,7 +28,7 @@
             if (_mutantService.IsMutant(dna.Dna))
                 return Ok(true);
             else
-                return Ok(false);
+                return StatusCode(403);
         }
     }
 }

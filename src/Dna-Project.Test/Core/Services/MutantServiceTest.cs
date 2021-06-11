@@ -11,7 +11,7 @@
 
         public MutantServiceTest()
         {
-            mutantService = new();
+            mutantService = new(null);
         }
 
         private static readonly object[] Dnas =

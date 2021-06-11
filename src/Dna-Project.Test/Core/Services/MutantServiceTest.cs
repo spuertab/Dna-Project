@@ -2,6 +2,7 @@
 {
     using Dna_Project.Core.Services;
     using NUnit.Framework;
+    using System.ComponentModel.DataAnnotations;
 
     [TestFixture]
     public class MutantServiceTest
@@ -48,7 +49,15 @@
                     "ATAAGG",
                     "CCTCTA",
                     "TCATTG"
-                } 
+                },
+                new string[] {
+                    "ATGGGG",
+                    "AAGTGC",
+                    "ATAGGT",
+                    "ATAATG",
+                    "CCTTTA",
+                    "TCTTTG"
+                }
             },
         };
 
@@ -58,6 +67,30 @@
         {
             // Service
             Assert.IsTrue(mutantService.IsMutant(dna));
+        }
+
+        private static readonly object[] Dnas4 =
+        {
+            new object[]
+            {
+                new string[] {
+                    "ORLGGG",
+                    "AAGTGC",
+                    "ATAGKT",
+                    "ATAATG",
+                    "CCTTTA",
+                    "TCTTTG"
+                },
+                System.Array.Empty<string>()
+            },
+        };
+
+        [Test]
+        [TestCaseSource(nameof(Dnas4))]
+        public void InvalidDna(string[] dna)
+        {
+            // Service
+            Assert.Throws<ValidationException>(() => mutantService.IsMutant(dna));
         }
     }
 }

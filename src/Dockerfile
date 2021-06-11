@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY . .
 RUN dotnet restore "Dna-Project.Api/Dna-Project.Api.csproj"
-WORKDIR "/src/Dna-Project.Api.csproj"
+WORKDIR "/src/Dna-Project.Api"
 RUN dotnet build "Dna-Project.Api.csproj" -c Release -o /app
 
 FROM build AS publish

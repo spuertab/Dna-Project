@@ -3,6 +3,7 @@
     using Core.Dto;
     using Core.Interfaces;
     using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
 
     [Route("api/mutant")]
     [ApiController]
@@ -23,9 +24,9 @@
         /// <response code="200">Successful</response>    
         /// <response code="403">Forbidden</response>    
         [HttpPost]
-        public ActionResult Mutant(DnaDto dna)
+        public async Task<ActionResult> MutantAsync(DnaDto dna)
         {
-            if (_mutantService.IsMutant(dna.Dna))
+            if (await _mutantService.IsMutantAsync(dna.Dna))
                 return Ok(true);
             else
                 return StatusCode(403);

@@ -1,9 +1,12 @@
-﻿using Dna_Project.Infra.Models;
-
-namespace Dna_Project.Infra.Interface
+﻿namespace Dna_Project.Infra.Interface
 {
+    using Dna_Project.Infra.Models;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface IMutantRepository
     {
-        void SaveDan(DnaModel dnaModel);
+        Task AddItemAsync(DnaModel item);
+        Task<IEnumerable<DnaModel>> GetItemsAsync(string query);
     }
 }

@@ -1,7 +1,9 @@
 ﻿namespace Dna_Project.Core.Interfaces
 {
+    using System.Threading.Tasks;
+
     public interface IMutantService
     {
-        bool IsMutant(string[] dna);
+        Task<bool> IsMutantAsync(string[] dna);
     }
 }

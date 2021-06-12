@@ -5,20 +5,21 @@
     using Interfaces;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public class MutantService : IMutantService
     {
         readonly int minEquals = 2;
         readonly int totalToValidate = 4;
         readonly char[] letters = new char[] { 'A', 'G', 'T', 'C' };
-        readonly IMutantRepository _mutantService;
+        readonly IMutantRepository _mutantRepository;
 
-        public MutantService(IMutantRepository mutantService)
+        public MutantService(IMutantRepository mutantRepository)
         {
-            _mutantService = mutantService;
+            _mutantRepository = mutantRepository;
         }
 
-        public bool IsMutant(string[] dna)
+        public async Task<bool> IsMutantAsync(string[] dna)
         {
             if (dna == null || dna.Length < 1) throw new ValidationException("Wrong DNA");
 
@@ -30,7 +31,7 @@
                 IsMutant = isMutant
             };
 
-            _mutantService.SaveDan(dnaModel);
+            await _mutantRepository.AddItemAsync(dnaModel);
 
             return isMutant;
         }

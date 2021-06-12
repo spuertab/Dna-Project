@@ -1,17 +1,25 @@
 ﻿namespace Dna_Project.Test.Core.Services
 {
     using Dna_Project.Core.Services;
+    using Dna_Project.Infra.Interface;
+    using Dna_Project.Infra.Models;
+    using Moq;
     using NUnit.Framework;
     using System.ComponentModel.DataAnnotations;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class MutantServiceTest
     {
-        readonly MutantService mutantService;
+        MutantService mutantService;
 
-        public MutantServiceTest()
+        [OneTimeSetUp]
+        public void SetUp()
         {
-            mutantService = new(null);
+            Mock<IMutantRepository> mockMutantRepository = new();
+            mockMutantRepository.Setup(st => st.AddItemAsync(It.IsAny<DnaModel>()));
+
+            mutantService = new(mockMutantRepository.Object);
         }
 
         private static readonly object[] Dnas =
@@ -32,10 +40,10 @@
 
         [Test]
         [TestCaseSource(nameof(Dnas))]
-        public void IsNotMutant(string[] dna)
+        public async Task IsNotMutantAsync(string[] dna)
         {
             // Service
-            Assert.IsFalse(mutantService.IsMutant(dna));
+            Assert.IsFalse(await mutantService.IsMutantAsync(dna));
         }
 
         private static readonly object[] Dnas2 =
@@ -66,10 +74,10 @@
 
         [Test]
         [TestCaseSource(nameof(Dnas2))]
-        public void IsMutant(string[] dna)
+        public async Task IsMutantAsync(string[] dna)
         {
             // Service
-            Assert.IsTrue(mutantService.IsMutant(dna));
+            Assert.IsTrue(await mutantService.IsMutantAsync(dna));
         }
 
         private static readonly object[] Dnas4 =
@@ -96,7 +104,7 @@
         public void InvalidDna(string[] dna)
         {
             // Service
-            Assert.Throws<ValidationException>(() => mutantService.IsMutant(dna));
+            Assert.ThrowsAsync<ValidationException>(async () => await mutantService.IsMutantAsync(dna));
         }
     }
 }

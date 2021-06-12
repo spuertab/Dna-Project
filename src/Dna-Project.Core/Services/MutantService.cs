@@ -45,13 +45,17 @@
                 if (!letters.Contains(letter)) throw new ValidationException("Wrong DNA");
 
                 // Validar diagonal
-                if (ValidateDiagonal(dna, position, letter, letterPosition)) equals++;
+                if (ValidateDiagonal(dna, position, letter, letterPosition)) 
+                    equals++;
                 // Validar diagonalmente reversa
-                if (ValidateReverseDiagonal(dna, position, letter, letterPosition)) equals++;
+                if (ValidateReverseDiagonal(dna, position, letter, letterPosition)) 
+                    equals++;
                 // Validar derecha
-                if (ValidateRight(dna, position, letter, letterPosition)) equals++;
+                if (ValidateRight(dna, position, letter, letterPosition)) 
+                    equals++;
                 // Validar abajo
-                if (ValidateDown(dna, position, letter, letterPosition)) equals++;
+                if (ValidateDown(dna, position, letter, letterPosition)) 
+                    equals++;
 
                 letterPosition++;
             }
@@ -90,13 +94,14 @@
         {
             int sequence = 1;
             int positionAux = 0;
+            int totalToValidateAux = totalToValidate - 1;
 
-            for (int i = letterPosition; i > (letterPosition - totalToValidate < 0 ? totalToValidate : letterPosition - totalToValidate); i--)
+            for (int i = letterPosition; i > (letterPosition - totalToValidateAux < 0 ? totalToValidateAux : letterPosition - totalToValidateAux); i--)
             {
                 positionAux++;
                 if (position + positionAux < dna.Length &&
                     i < dna[position + positionAux].ToCharArray().Length &&
-                    letter == dna[position + positionAux].ToCharArray()[i])
+                    letter == dna[position + positionAux].ToCharArray()[i - 1])
                     sequence++;
                 else
                     break;

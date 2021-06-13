@@ -1,9 +1,9 @@
-﻿namespace Dna_Project.Core.Dto
+﻿namespace Dna_Project.Core.Entities
 {
     using Newtonsoft.Json;
     using System;
 
-    public class CountDnaDto
+    public class CountDnaEntity
     {
         [JsonProperty("count_mutant_dna")]
         public int CountMutantDna { get; set; } = 0;

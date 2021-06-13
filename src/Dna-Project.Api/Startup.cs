@@ -6,7 +6,6 @@ namespace Dna_Project.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.OpenApi.Models;
-    using Core.Interfaces;
     using Core.Services;
     using System;
     using System.Reflection;
@@ -17,6 +16,12 @@ namespace Dna_Project.Api
     using Dna_Project.Infra.Repositories;
     using System.Threading.Tasks;
     using Microsoft.Azure.Cosmos;
+    using Dna_Project.Core.Interfaces.Services;
+    using Dna_Project.Core.Interfaces.Strategies;
+    using Dna_Project.Core.Strategies;
+    using Dna_Project.Core.Strategies.DnaDirections;
+    using Dna_Project.Core.Config;
+    using Microsoft.Extensions.Options;
 
     public class Startup
     {
@@ -57,6 +62,23 @@ namespace Dna_Project.Api
 
             // Repositories
             services.AddSingleton<IMutantRepository>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+
+            // Strategies
+            services.AddScoped<IDnaStrategy, DnaStrategy>();
+            services.AddScoped<IDnaDirection, RDnaDirection>();
+            services.AddScoped<IDnaDirection, DDnaDirection>();
+            services.AddScoped<IDnaDirection, DIDnaDirection>();
+            services.AddScoped<IDnaDirection, DIRDnaDirection>();
+
+            // Global variables
+            Action<DnaConfig> mduOptions = (opt =>
+            {
+                opt.MinEquals = 2;
+                opt.TotalToValidate = 4;
+                opt.Letters = new char[] { 'A', 'G', 'T', 'C' };
+            });
+            services.Configure(mduOptions);
+            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<DnaConfig>>().Value);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

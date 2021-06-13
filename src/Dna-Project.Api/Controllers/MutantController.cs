@@ -1,7 +1,7 @@
 ﻿namespace Dna_Project.Api.Controllers
 {
-    using Core.Dto;
-    using Core.Interfaces;
+    using Core.Entities;
+    using Core.Interfaces.Services;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
 
@@ -24,7 +24,7 @@
         /// <response code="200">Successful</response>    
         /// <response code="403">Forbidden</response>    
         [HttpPost]
-        public async Task<ActionResult> MutantAsync(DnaDto dna)
+        public async Task<ActionResult> MutantAsync(DnaEntity dna)
         {
             if (await _mutantService.IsMutantAsync(dna.Dna))
                 return Ok(true);

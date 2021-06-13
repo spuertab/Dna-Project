@@ -1,23 +1,27 @@
 ﻿namespace Dna_Project.Core.Services
 {
-    using Dna_Project.Core.Dto;
+    using Dna_Project.Core.Config;
+    using Dna_Project.Core.Entities;
+    using Dna_Project.Core.Enums;
+    using Dna_Project.Core.Interfaces.Strategies;
     using Dna_Project.Infra.Interface;
     using Dna_Project.Infra.Models;
-    using Interfaces;
+    using Interfaces.Services;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Threading.Tasks;
 
     public class MutantService : IMutantService
     {
-        readonly int minEquals = 2;
-        readonly int totalToValidate = 4;
-        readonly char[] letters = new char[] { 'A', 'G', 'T', 'C' };
         readonly IMutantRepository _mutantRepository;
+        readonly IDnaStrategy _dnaStrategy;
+        readonly DnaConfig _dnaConfig;
 
-        public MutantService(IMutantRepository mutantRepository)
+        public MutantService(IMutantRepository mutantRepository, IDnaStrategy dnaStrategy, DnaConfig dnaConfig)
         {
             _mutantRepository = mutantRepository;
+            _dnaConfig = dnaConfig;
+            _dnaStrategy = dnaStrategy;
         }
 
         public async Task<bool> IsMutantAsync(string[] dna)
@@ -43,119 +47,38 @@
 
             foreach (char letter in dna[position].ToCharArray())
             {
-                if (!letters.Contains(letter)) throw new ValidationException("Wrong DNA");
+                if (!_dnaConfig.Letters.Contains(letter)) throw new ValidationException("Wrong DNA");
 
                 // Validar diagonal
-                if (ValidateDiagonal(dna, position, letter, letterPosition)) 
+                if (_dnaStrategy.ValidateDirection(dna, position, letter, letterPosition, DnaDirection.Diagonal)) 
                     equals++;
                 // Validar diagonalmente reversa
-                if (ValidateReverseDiagonal(dna, position, letter, letterPosition)) 
+                if (_dnaStrategy.ValidateDirection(dna, position, letter, letterPosition, DnaDirection.DiagonalReverse)) 
                     equals++;
                 // Validar derecha
-                if (ValidateRight(dna, position, letter, letterPosition)) 
+                if (_dnaStrategy.ValidateDirection(dna, position, letter, letterPosition, DnaDirection.Right)) 
                     equals++;
                 // Validar abajo
-                if (ValidateDown(dna, position, letter, letterPosition)) 
+                if (_dnaStrategy.ValidateDirection(dna, position, letter, letterPosition, DnaDirection.Down)) 
                     equals++;
 
                 letterPosition++;
             }
 
-            if (equals >= minEquals) return true;
+            if (equals >= _dnaConfig.MinEquals) return true;
             position += 1;
             if (dna.Length == position) return false;
 
             return IsMutantRecursive(dna, position, equals);
         }
 
-        // Validar diagonalmente
-        private bool ValidateDiagonal(string[] dna, int position, char letter, int letterPosition)
-        {
-            int sequence = 1;
-            int positionAux = 0;
-
-            for (int i = 1 + letterPosition; i < totalToValidate + letterPosition; i++)
-            {
-                positionAux++;
-                if (position + positionAux < dna.Length && 
-                    i < dna[position + positionAux].ToCharArray().Length && 
-                    letter == dna[position + positionAux].ToCharArray()[i])
-                    sequence++;
-                else
-                    break;
-            }
-
-            if (sequence == totalToValidate) return true;
-
-            return false;
-        }
-
-        // Validar diagonalmente reversa
-        private bool ValidateReverseDiagonal(string[] dna, int position, char letter, int letterPosition)
-        {
-            int sequence = 1;
-            int positionAux = 0;
-            int totalToValidateAux = totalToValidate - 1;
-
-            for (int i = letterPosition; i > (letterPosition - totalToValidateAux < 0 ? totalToValidateAux : letterPosition - totalToValidateAux); i--)
-            {
-                positionAux++;
-                if (position + positionAux < dna.Length &&
-                    i < dna[position + positionAux].ToCharArray().Length &&
-                    letter == dna[position + positionAux].ToCharArray()[i - 1])
-                    sequence++;
-                else
-                    break;
-            }
-
-            if (sequence == totalToValidate) return true;
-
-            return false;
-        }
-
-        // Validar a la derecha
-        private bool ValidateRight(string[] dna, int position, char letter, int letterPosition)
-        {
-            int sequence = 1;
-
-            for (int i = 1 + letterPosition; i < totalToValidate + letterPosition; i++)
-            {
-                if (i < dna[position].ToCharArray().Length && letter == dna[position].ToCharArray()[i])
-                    sequence++;
-                else
-                    break;
-            }
-
-            if (sequence == totalToValidate) return true;
-
-            return false;
-        }
-
-        // Validar a la derecha
-        private bool ValidateDown(string[] dna, int position, char letter, int letterPosition)
-        {
-            int sequence = 1;
-
-            for (int i = 1 + position; i < totalToValidate + position; i++)
-            {
-                if (i < dna.Length && letter == dna[i].ToCharArray()[letterPosition])
-                    sequence++;
-                else
-                    break;
-            }
-
-            if (sequence == totalToValidate) return true;
-
-            return false;
-        }
-
-        public async Task<CountDnaDto> GetCountDnaAsync()
+        public async Task<CountDnaEntity> GetCountDnaAsync()
         {
             string query = "SELECT SUM(c.isMutant ? 1 : 0) AS count_mutant_dna, SUM(c.isMutant = false ? 1 : 0) AS count_human_dna FROM c";
 
             CountDnaModel countDnaModel = (await _mutantRepository.GetCountDnaAsync(query)).FirstOrDefault();
 
-            CountDnaDto countDnaDto = new CountDnaDto
+            CountDnaEntity countDnaDto = new CountDnaEntity
             {
                 CountMutantDna = countDnaModel.CountMutantDna,
                 CountHumanDna = countDnaModel.CountHumanDna

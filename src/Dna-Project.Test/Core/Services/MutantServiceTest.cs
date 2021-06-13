@@ -17,7 +17,7 @@
         public void SetUp()
         {
             Mock<IMutantRepository> mockMutantRepository = new();
-            mockMutantRepository.Setup(st => st.AddItemAsync(It.IsAny<DnaModel>()));
+            mockMutantRepository.Setup(st => st.AddDnaAsync(It.IsAny<DnaModel>()));
 
             mutantService = new(mockMutantRepository.Object);
         }

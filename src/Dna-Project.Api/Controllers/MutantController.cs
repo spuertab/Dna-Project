@@ -31,5 +31,17 @@
             else
                 return StatusCode(403);
         }
+
+        /// <summary>
+        /// Stats endpoint
+        /// </summary>
+        /// <returns>Stats</returns>
+        /// <response code="200">Successful</response>    
+        [HttpGet]
+        [Route("stats")]
+        public async Task<ActionResult> GetStats()
+        {
+            return Ok(await _mutantService.GetCountDnaAsync());
+        }
     }
 }

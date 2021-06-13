@@ -1,5 +1,6 @@
 ﻿namespace Dna_Project.Core.Services
 {
+    using Dna_Project.Core.Dto;
     using Dna_Project.Infra.Interface;
     using Dna_Project.Infra.Models;
     using Interfaces;
@@ -31,7 +32,7 @@
                 IsMutant = isMutant
             };
 
-            await _mutantRepository.AddItemAsync(dnaModel);
+            await _mutantRepository.AddDnaAsync(dnaModel);
 
             return isMutant;
         }
@@ -146,6 +147,23 @@
             if (sequence == totalToValidate) return true;
 
             return false;
+        }
+
+        public async Task<CountDnaDto> GetCountDnaAsync()
+        {
+            string query = "SELECT SUM(c.isMutant ? 1 : 0) AS count_mutant_dna, SUM(c.isMutant = false ? 1 : 0) AS count_human_dna FROM c";
+
+            CountDnaModel countDnaModel = (await _mutantRepository.GetCountDnaAsync(query)).FirstOrDefault();
+
+            CountDnaDto countDnaDto = new CountDnaDto
+            {
+                CountMutantDna = countDnaModel.CountMutantDna,
+                CountHumanDna = countDnaModel.CountHumanDna
+            };
+
+            countDnaDto.CalculateRatio();
+
+            return countDnaDto;
         }
     }
 }

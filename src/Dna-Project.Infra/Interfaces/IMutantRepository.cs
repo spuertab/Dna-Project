@@ -6,7 +6,7 @@
 
     public interface IMutantRepository
     {
-        Task AddItemAsync(DnaModel item);
-        Task<IEnumerable<DnaModel>> GetItemsAsync(string query);
+        Task AddDnaAsync(DnaModel item);
+        Task<IEnumerable<CountDnaModel>> GetCountDnaAsync(string query);
     }
 }

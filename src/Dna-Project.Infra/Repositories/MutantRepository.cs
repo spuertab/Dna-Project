@@ -19,16 +19,17 @@
             _container = dbClient.GetContainer(databaseName, containerName);
         }
 
-        public async Task AddItemAsync(DnaModel item)
+        public async Task AddDnaAsync(DnaModel item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
 
-        public async Task<IEnumerable<DnaModel>> GetItemsAsync(string queryString)
+        public async Task<IEnumerable<CountDnaModel>> GetCountDnaAsync(string queryString)
         {
-            var query = _container.GetItemQueryIterator<DnaModel>(new QueryDefinition(queryString));
+            var query = _container.GetItemQueryIterator<CountDnaModel>(new QueryDefinition(queryString));
 
-            List<DnaModel> results = new List<DnaModel>();
+            List<CountDnaModel> results = new List<CountDnaModel>();
+
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();

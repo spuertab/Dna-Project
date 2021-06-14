@@ -1,10 +1,15 @@
 ﻿namespace Dna_Project.Test.Core.Services
 {
+    using Dna_Project.Core.Config;
+    using Dna_Project.Core.Interfaces.Strategies;
     using Dna_Project.Core.Services;
+    using Dna_Project.Core.Strategies;
+    using Dna_Project.Core.Strategies.DnaDirections;
     using Dna_Project.Infra.Interface;
     using Dna_Project.Infra.Models;
     using Moq;
     using NUnit.Framework;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
 
@@ -16,10 +21,29 @@
         [OneTimeSetUp]
         public void SetUp()
         {
+            DnaConfig dnaConfig = new()
+            {
+                MinEquals = 2,
+                TotalToValidate = 4,
+                Letters = new char[] { 'A', 'G', 'T', 'C' }
+            };
+
+            // Repository
             Mock<IMutantRepository> mockMutantRepository = new();
             mockMutantRepository.Setup(st => st.AddDnaAsync(It.IsAny<DnaModel>()));
 
-            mutantService = new(mockMutantRepository.Object);
+            // Strategy pettern
+            List<IDnaDirection> dnaDirections = new()
+            {
+                new DDnaDirection(dnaConfig),
+                new DIDnaDirection(dnaConfig),
+                new DIRDnaDirection(dnaConfig),
+                new RDnaDirection(dnaConfig)
+            };
+
+            DnaStrategy dnaStrategy = new(dnaDirections);
+
+            mutantService = new(mockMutantRepository.Object, dnaStrategy, dnaConfig);
         }
 
         private static readonly object[] Dnas =

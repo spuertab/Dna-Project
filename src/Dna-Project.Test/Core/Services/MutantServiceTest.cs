@@ -1,6 +1,7 @@
 ﻿namespace Dna_Project.Test.Core.Services
 {
     using Dna_Project.Core.Config;
+    using Dna_Project.Core.Entities;
     using Dna_Project.Core.Interfaces.Strategies;
     using Dna_Project.Core.Services;
     using Dna_Project.Core.Strategies;
@@ -30,7 +31,17 @@
 
             // Repository
             Mock<IMutantRepository> mockMutantRepository = new();
-            mockMutantRepository.Setup(st => st.AddDnaAsync(It.IsAny<DnaModel>()));
+            mockMutantRepository
+                .Setup(st => st.AddDnaAsync(It.IsAny<DnaModel>()));
+            mockMutantRepository
+                .Setup(st => st.GetCountDnaAsync(It.IsAny<string>()))
+                .ReturnsAsync(new List<CountDnaModel>() {
+                    new CountDnaModel
+                    {
+                        CountMutantDna = 40,
+                        CountHumanDna = 100
+                    }
+                });
 
             // Strategy pettern
             List<IDnaDirection> dnaDirections = new()
@@ -129,6 +140,15 @@
         {
             // Service
             Assert.ThrowsAsync<ValidationException>(async () => await mutantService.IsMutantAsync(dna));
+        }
+
+        [Test]
+        public async Task GetStatsAsync()
+        {
+            // Service
+            CountDnaEntity countDnaEntity = await mutantService.GetCountDnaAsync();
+
+            Assert.AreEqual(0.4, countDnaEntity.Ratio);
         }
     }
 }

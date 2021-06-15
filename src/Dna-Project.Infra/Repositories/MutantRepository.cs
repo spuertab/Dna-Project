@@ -9,7 +9,7 @@
 
     public class MutantRepository : IMutantRepository
     {
-        private Container _container;
+        private readonly Container _container;
 
         public MutantRepository(
             CosmosClient dbClient,

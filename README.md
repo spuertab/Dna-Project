@@ -35,5 +35,15 @@ Direcciones implementadas:
 Es importante destacar que se implementó un patrón de estrategia para las direcciones de búsqueda y así hacer la aplicación extensible, por ejemplo si en un futuro se requiere hacer una búsqueda de secuencias de letras en "L" la implementación sería muy sencilla gracias a este patrón de comportamiento, esto también se hizo con el fin de respetar los principios SOLID.
 
 # Arquitectura de componentes
-![image](https://user-images.githubusercontent.com/43219701/121989328-92011b80-cd61-11eb-8cab-38961c7b5315.png)
+![image](https://user-images.githubusercontent.com/43219701/121992019-659bce00-cd66-11eb-8b22-0eb9138c0198.png)
 
+- Todos los componentes presentados anteriormente fueron creados en Azure cloud, los tengo en una cuenta gratuita en la cual puedo crear recursos con las capacidades más bajas
+- Este proyecto contiene una API creada en .Net 5.0 que es un lenguaje multiplataforma y por tal motivo se dockerizó para posteriormente ser desplegada en un app services Linux que tiene mejor rendimiento que uno en windows.
+- La base de datos utilizada es una Cosmos DB de tipo SQL.
+- El app service tiene autoscale horizontal, cuando el número de peticiones por segundo crece el número de instancias también.
+- La base de datos tiene autoscale vertical, cuando el número de registros guardados en la base de datos crece, la potencia de la base de datos también.
+
+URL API en Azure:
+[link](https://dna-ml.azurewebsites.net/swagger/index.html)
+
+# Ejecución del proyecto localmente

@@ -83,3 +83,17 @@ La API tiene configurado el pluggin de swagger para su documentación:
 ![image](https://user-images.githubusercontent.com/43219701/121994396-cf1ddb80-cd6a-11eb-8c1c-dd715d8698c4.png)
 
 Swagger te brinda también una interfaz para ejecutar los endpoints implementados que son el POST /mutant y el GET /stats 
+
+# PRUEBAS DE CARGA Y ESTRES
+
+Se realizaron pruebas de carga y estres en Jmeter al endpoint POST /mutant de 1 a 300 usuarios conectados generando peticiones por un tiempo de 10 minutos y los resultados fueron los siguientes:
+
+![image](https://user-images.githubusercontent.com/43219701/122073252-e76b1600-cdbd-11eb-9f66-3a14c077895f.png)
+
+![image](https://user-images.githubusercontent.com/43219701/122073319-f356d800-cdbd-11eb-9854-adf95c93bd99.png)
+
+Las peticiones verdes son de ADN que no son mutantes y los rojos de los que son mutantes
+
+![image](https://user-images.githubusercontent.com/43219701/122073423-049fe480-cdbe-11eb-99b4-355a59607376.png)
+
+Estas pruebas de carga se hicieron con los recursos más mínimos del app service y de la base de datos, si se aumenta el número de usuarios conectados tanto el app service como la base de datos se van a auto-escalar pero como mi cuenta de azure es free, tiene un límite y cuando sobrepase el límite la cuenta se va a bloquear para evitar sobre costos de infraestructura.

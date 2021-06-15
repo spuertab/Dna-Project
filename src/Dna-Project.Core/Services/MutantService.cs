@@ -47,18 +47,32 @@
             {
                 if (!_dnaConfig.Letters.Contains(letter.Row)) throw new ValidationException("Wrong DNA");
 
-                // Validar diagonal
-                if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Diagonal)) 
-                    equals++;
-                // Validar diagonalmente reversa
-                if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.DiagonalReverse)) 
-                    equals++;
-                // Validar derecha
-                if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Right)) 
-                    equals++;
+                                                
                 // Validar abajo
                 if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Down)) 
                     equals++;
+
+                Task[] tasks = new Task[4];
+
+                tasks[0] = Task.Run(() => {
+                    if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Diagonal))
+                        equals++;
+                });
+                tasks[1] = Task.Run(() => {
+                    if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.DiagonalReverse))
+                        equals++;
+                });
+                tasks[2] = Task.Run(() => {
+                    if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Right))
+                        equals++;
+                });
+
+                tasks[3] = Task.Run(() => {
+                    if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Right))
+                        equals++;
+                });
+
+                Task.WaitAll(tasks);
             }
 
             if (equals >= _dnaConfig.MinEquals) return true;

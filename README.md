@@ -45,7 +45,7 @@ Es importante destacar que se implementó un patrón de estrategia para las dire
 - La base de datos tiene autoscale vertical, cuando el número de registros guardados en la base de datos crece, la potencia de la base de datos también.
 
 URL API en Azure:
-https://dna-ml.azurewebsites.net/swagger/index.html
+https://ml-dna-api.azurewebsites.net/swagger/index.html
 
 # Ejecución del proyecto localmente
 Clonar el proyecto
@@ -61,8 +61,8 @@ Con visual studio 2019
 Con docker:
 -  Después de tener el proyecto clonado ir a la carpeta /src y luego ejecutar con PowerShell u otra consola de comandos las siguientes lineas (se debe tener instalado docker en la máquina donde se clonó el proyecto)
 ```
-docker build -t ml/dnaproject .
-docker run
+docker build -t dnaproject/dockerapi .
+docker run -it --rm -p 8080:80 dnaproject/dockerapi
 ```
 - Entrar a http://localhost:8080/swagger/index.html
 

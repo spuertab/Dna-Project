@@ -77,14 +77,14 @@ dotnet Dna-Project.Api.dll --environment "Development"
 
 La base de datos se creó en Azure, por lo tanto no requiere ser instalada localmente ya que el proyecto tiene configurada las credenciales y las key para poder hacer la conexión al servicio en la nube.
 
-# SWAGGER
+# Swagger
 La API tiene configurado el pluggin de swagger para su documentación:
 
 ![image](https://user-images.githubusercontent.com/43219701/121994396-cf1ddb80-cd6a-11eb-8c1c-dd715d8698c4.png)
 
 Swagger te brinda también una interfaz para ejecutar los endpoints implementados que son el POST /mutant y el GET /stats 
 
-# PRUEBAS DE CARGA Y ESTRES
+# Pruebas de carga y estres
 
 Se realizaron pruebas de carga y estres en Jmeter al endpoint POST /mutant de 1 a 300 usuarios conectados generando peticiones por un tiempo de 10 minutos y los resultados fueron los siguientes:
 

@@ -37,6 +37,7 @@ Es importante destacar que se implementó un patrón de estrategia para las dire
 # Arquitectura de componentes
 ![image](https://user-images.githubusercontent.com/43219701/121992019-659bce00-cd66-11eb-8b22-0eb9138c0198.png)
 
+
 - Todos los componentes presentados anteriormente fueron creados en Azure cloud, los tengo en una cuenta gratuita en la cual puedo crear recursos con las capacidades más bajas
 - Este proyecto contiene una API creada en .Net 5.0 que es un lenguaje multiplataforma y por tal motivo se dockerizó para posteriormente ser desplegada en un app services Linux que tiene mejor rendimiento que uno en windows.
 - La base de datos utilizada es una Cosmos DB de tipo SQL.
@@ -44,6 +45,39 @@ Es importante destacar que se implementó un patrón de estrategia para las dire
 - La base de datos tiene autoscale vertical, cuando el número de registros guardados en la base de datos crece, la potencia de la base de datos también.
 
 URL API en Azure:
-[link](https://dna-ml.azurewebsites.net/swagger/index.html)
+https://dna-ml.azurewebsites.net/swagger/index.html
 
 # Ejecución del proyecto localmente
+Clonar el proyecto
+```
+git clone https://github.com/spuertab/Dna-Project.git
+```
+
+Hay tres alternativas para ejecutar el proyecto localmente:
+
+Con visual studio 2019
+- Abrir la solución que está en la carpeta /src/Dna-Project.Api en visual studio 2019 y ejecutarla con IIS Express.
+
+Con docker:
+-  Después de tener el proyecto clonado ir a la carpeta /src y luego ejecutar con PowerShell u otra consola de comandos las siguientes lineas (se debe tener instalado docker en la máquina donde se clonó el proyecto)
+```
+docker build -t ml/dnaproject .
+docker run
+```
+- Entrar a http://localhost:8080/swagger/index.html
+
+Con dotnet CLI
+- Después de tener el proyecto clonado ir a la carpeta /src y luego ejecutar con PowerShell u otra consola de comandos las siguientes lineas (se debe tener instalado .Net en la maquina donde se clonó el proyecto)
+```
+dotnet publish
+cd  "Dna-Project.Api\bin\Debug\net5.0"    
+dotnet Dna-Project.Api.dll --environment "Development"
+```
+- Entrar a https://localhost:5001/swagger/index.html
+
+# SWAGGER
+La API tiene configurado el pluggin de swagger para su documentación:
+
+![image](https://user-images.githubusercontent.com/43219701/121994396-cf1ddb80-cd6a-11eb-8c1c-dd715d8698c4.png)
+
+Swagger te brinda también una interfaz para ejecutar los endpoints implementados que son el POST /mutant y el GET /Stats 

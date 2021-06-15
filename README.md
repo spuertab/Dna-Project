@@ -80,4 +80,4 @@ La API tiene configurado el pluggin de swagger para su documentación:
 
 ![image](https://user-images.githubusercontent.com/43219701/121994396-cf1ddb80-cd6a-11eb-8c1c-dd715d8698c4.png)
 
-Swagger te brinda también una interfaz para ejecutar los endpoints implementados que son el POST /mutant y el GET /Stats 
+Swagger te brinda también una interfaz para ejecutar los endpoints implementados que son el POST /mutant y el GET /stats 

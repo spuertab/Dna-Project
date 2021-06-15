@@ -11,7 +11,7 @@ boolean isMutant(String[] dna); // Ejemplo Java
 
 # Algoritmo
 
-Para la detención de mutantes se desarrolló un algoritmo para buscar las secuencias de letras en la matriz de ADN de una forma eficiente recorriendo cada letra nitrogenada de dicha matriz desde la primera fila columna por columna hasta la última. Por cada letra se busca de forma paralela en ejecución en las direcciones especificadas en el enunciado de para que el tiempo de respuesta del algoritmo sea más óptimo y cabe resaltar que cuando se encuentren dos o más secuencias iguales de letras el algoritmo termina de procesar la matriz para evitar recorridos innecesarios.
+Para la detención de mutantes se desarrolló un algoritmo para buscar las secuencias de letras en la matriz de ADN de una forma eficiente recorriendo cada letra nitrogenada de dicha matriz desde la primera fila, columna por columna hasta la última. Por cada letra se busca de forma paralela en ejecución en las direcciones especificadas en el enunciado para que el tiempo de respuesta del algoritmo sea más óptimo y cabe resaltar que cuando se encuentren dos o más secuencias iguales de letras el algoritmo termina de procesar la matriz para evitar recorridos innecesarios.
 
 Direcciones implementadas:
 
@@ -45,7 +45,7 @@ Es importante destacar que se implementó un patrón de estrategia para las dire
 - La base de datos tiene autoscale vertical, cuando el número de registros guardados en la base de datos crece, la potencia de la base de datos también.
 
 URL API en Azure:
-https://dna-ml.azurewebsites.net/swagger/index.html
+https://ml-dna-api.azurewebsites.net/swagger/index.html
 
 # Ejecución del proyecto localmente
 Clonar el proyecto
@@ -61,8 +61,8 @@ Con visual studio 2019
 Con docker:
 -  Después de tener el proyecto clonado ir a la carpeta /src y luego ejecutar con PowerShell u otra consola de comandos las siguientes lineas (se debe tener instalado docker en la máquina donde se clonó el proyecto)
 ```
-docker build -t ml/dnaproject .
-docker run
+docker build -t dnaproject/dockerapi .
+docker run -it --rm -p 8080:80 dnaproject/dockerapi
 ```
 - Entrar a http://localhost:8080/swagger/index.html
 

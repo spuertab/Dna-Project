@@ -75,6 +75,8 @@ dotnet Dna-Project.Api.dll --environment "Development"
 ```
 - Entrar a https://localhost:5001/swagger/index.html
 
+La base de datos se creó en Azure, por lo tanto no requiere ser instalada localmente ya que el proyecto tiene configurada las credenciales y las key para poder hacer la conexión al servicio en la nube.
+
 # SWAGGER
 La API tiene configurado el pluggin de swagger para su documentación:
 

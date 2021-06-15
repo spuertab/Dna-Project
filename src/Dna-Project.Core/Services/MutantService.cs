@@ -43,26 +43,22 @@
 
         private bool IsMutantRecursive(string[] dna, int position = 0, int equals = 0)
         {
-            int letterPosition = 0;
-
-            foreach (char letter in dna[position].ToCharArray())
+            foreach (var letter in dna[position].ToCharArray().Select((r, i) => new { Row = r, Index = i }))
             {
-                if (!_dnaConfig.Letters.Contains(letter)) throw new ValidationException("Wrong DNA");
+                if (!_dnaConfig.Letters.Contains(letter.Row)) throw new ValidationException("Wrong DNA");
 
                 // Validar diagonal
-                if (_dnaStrategy.ValidateDirection(dna, position, letter, letterPosition, DnaDirection.Diagonal)) 
+                if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Diagonal)) 
                     equals++;
                 // Validar diagonalmente reversa
-                if (_dnaStrategy.ValidateDirection(dna, position, letter, letterPosition, DnaDirection.DiagonalReverse)) 
+                if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.DiagonalReverse)) 
                     equals++;
                 // Validar derecha
-                if (_dnaStrategy.ValidateDirection(dna, position, letter, letterPosition, DnaDirection.Right)) 
+                if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Right)) 
                     equals++;
                 // Validar abajo
-                if (_dnaStrategy.ValidateDirection(dna, position, letter, letterPosition, DnaDirection.Down)) 
+                if (_dnaStrategy.ValidateDirection(dna, position, letter.Row, letter.Index, DnaDirection.Down)) 
                     equals++;
-
-                letterPosition++;
             }
 
             if (equals >= _dnaConfig.MinEquals) return true;

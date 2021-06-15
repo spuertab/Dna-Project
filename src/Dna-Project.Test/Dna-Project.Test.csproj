@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dna-Project.Api\Dna-Project.Api.csproj" />
     <ProjectReference Include="..\Dna-Project.Core\Dna-Project.Core.csproj" />
   </ItemGroup>
 

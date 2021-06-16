@@ -11,7 +11,7 @@ boolean isMutant(String[] dna); // Ejemplo Java
 
 # Algoritmo
 
-Para la detención de mutantes se desarrolló un algoritmo para buscar las secuencias de letras en la matriz de ADN de una forma eficiente recorriendo cada letra nitrogenada de dicha matriz desde la primera fila, columna por columna hasta la última. Por cada letra se busca de forma paralela en ejecución en las direcciones especificadas en el enunciado para que el tiempo de respuesta del algoritmo sea más óptimo y cabe resaltar que cuando se encuentren dos o más secuencias iguales de letras el algoritmo termina de procesar la matriz para evitar recorridos innecesarios.
+Para la detención de mutantes se desarrolló un algoritmo para buscar las secuencias de letras en la matriz de ADN de una forma eficiente recorriendo cada letra nitrogenada de dicha matriz desde la primera fila, columna por columna hasta la última. Por cada letra se busca en las direcciones especificadas en el enunciado paralelamente para que el tiempo de respuesta del algoritmo sea más óptimo y cabe resaltar que cuando se encuentran las dos secuencias iguales de letras el algoritmo termina de procesar la matriz para evitar recorridos innecesarios.
 
 Direcciones implementadas:
 
